@@ -1,7 +1,7 @@
-package com.kovalenko.application.runner;
+package com.kovalenko.application.run;
 
 import com.kovalenko.application.exception.ApplicationException;
-import com.kovalenko.application.runner.console.ConsoleRunner;
+import com.kovalenko.application.run.console.ConsoleRunner;
 import com.kovalenko.ioc.constant.ErrorMessage;
 import com.kovalenko.ioc.constant.LaunchType;
 

@@ -1,8 +1,8 @@
 package com.kovalenko.application;
 
 import com.kovalenko.application.exception.ApplicationException;
-import com.kovalenko.application.runner.Runner;
-import com.kovalenko.application.runner.RunnerFactory;
+import com.kovalenko.application.run.Runner;
+import com.kovalenko.application.run.RunnerFactory;
 import com.kovalenko.ioc.annotation.ScanPackage;
 import com.kovalenko.ioc.bean.factory.BeanFactory;
 import com.kovalenko.ioc.bean.factory.stereotype.Launcher;

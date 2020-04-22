@@ -1,4 +1,4 @@
-package com.kovalenko.application.runner;
+package com.kovalenko.application.run;
 
 import com.kovalenko.application.exception.ApplicationException;
 

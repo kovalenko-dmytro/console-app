@@ -1,4 +1,4 @@
-package com.kovalenko.application.runner.constant;
+package com.kovalenko.application.run.constant;
 
 public enum RunnerConstant {
 

@@ -1,4 +1,4 @@
-package com.kovalenko.application.runner.console;
+package com.kovalenko.application.run.console;
 
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.info.ApiInfo;
@@ -13,8 +13,8 @@ import com.kovalenko.application.invoke.console.ConsoleControllerMethodInvoker;
 import com.kovalenko.application.resolve.Resolver;
 import com.kovalenko.application.resolve.console.ConsoleControllerResolver;
 import com.kovalenko.application.resolve.entity.RequestPathMatchResult;
-import com.kovalenko.application.runner.Runner;
-import com.kovalenko.application.runner.constant.RunnerConstant;
+import com.kovalenko.application.run.Runner;
+import com.kovalenko.application.run.constant.RunnerConstant;
 import com.kovalenko.application.validate.Validator;
 import com.kovalenko.application.validate.console.ControllerMethodArgsValidator;
 import com.kovalenko.ioc.exception.BeanCreationException;
