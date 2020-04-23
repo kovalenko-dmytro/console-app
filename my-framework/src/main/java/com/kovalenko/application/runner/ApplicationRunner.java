@@ -1,57 +1,73 @@
-package com.kovalenko.application.run.console;
+package com.kovalenko.application.runner;
 
+import com.kovalenko.application.configuration.ArgumentsParser;
+import com.kovalenko.application.configuration.console.ConsoleArgumentsParser;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.info.ApiInfo;
 import com.kovalenko.application.info.console.ConsoleApiInfo;
 import com.kovalenko.application.input.RequestParser;
-import com.kovalenko.application.input.RequestReader;
 import com.kovalenko.application.input.console.ConsoleRequestParser;
-import com.kovalenko.application.input.console.ConsoleRequestReader;
 import com.kovalenko.application.input.entity.ConsoleRequest;
 import com.kovalenko.application.invoke.Invoker;
 import com.kovalenko.application.invoke.console.ConsoleControllerMethodInvoker;
 import com.kovalenko.application.resolve.Resolver;
 import com.kovalenko.application.resolve.console.ConsoleControllerResolver;
 import com.kovalenko.application.resolve.entity.RequestPathMatchResult;
-import com.kovalenko.application.run.Runner;
-import com.kovalenko.application.run.constant.RunnerConstant;
+import com.kovalenko.application.runner.constant.RunnerConstant;
+import com.kovalenko.application.runner.constant.RunnerType;
+import com.kovalenko.application.runner.factory.CommandProvider;
+import com.kovalenko.application.runner.factory.CommandProviderFactory;
 import com.kovalenko.application.validate.Validator;
 import com.kovalenko.application.validate.console.ControllerMethodArgsValidator;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
-public class ConsoleRunner implements Runner {
+import java.util.Arrays;
+import java.util.Map;
 
-    private RequestReader<String> reader;
-    private RequestParser<ConsoleRequest> parser;
+public class ApplicationRunner {
+
+    private ArgumentsParser argumentsParser;
+    private RequestParser<ConsoleRequest> requestParser;
     private Resolver<ConsoleRequest, RequestPathMatchResult> resolver;
     private Validator<RequestPathMatchResult, ConsoleRequest> validator;
     private Invoker<RequestPathMatchResult, ConsoleRequest> invoker;
     private ApiInfo apiInfo;
 
-    public ConsoleRunner() {
-        reader = new ConsoleRequestReader();
-        parser = new ConsoleRequestParser();
+    private ApplicationRunner() {
+        argumentsParser = new ConsoleArgumentsParser();
+        requestParser = new ConsoleRequestParser();
         resolver = new ConsoleControllerResolver();
         validator = new ControllerMethodArgsValidator();
         invoker = new ConsoleControllerMethodInvoker();
         apiInfo = new ConsoleApiInfo();
     }
 
-    @Override
-    public void run(String ... args) {
-        printPreview();
+    private static class RunnerHolder {
+        private static final ApplicationRunner instance = new ApplicationRunner();
+    }
+
+    public static ApplicationRunner getInstance() {
+        return RunnerHolder.instance;
+    }
+
+    public void run(String ... args) throws ApplicationException {
+        Map<String, String> programArguments = argumentsParser.parse(args);
+        CommandProvider provider = CommandProviderFactory.getProvider(findRunnerType(programArguments));
         String input;
         while (true) {
-            input = reader.read();
+            input = provider.nextCommand();
             if (checkExit(input)) { break; }
             process(input);
         }
     }
 
-    private void printPreview() {
-        System.out.println(RunnerConstant.PLEASE_ENTER_REQUEST_COMMAND.getValue());
-        System.out.println(RunnerConstant.INFO_TO_VIEW_AVAILABLE_API_INFO.getValue());
-        System.out.println(RunnerConstant.EXIT_TO_EXIT_FROM_PROGRAM.getValue());
+    private String findRunnerType(Map<String, String> programArguments) {
+        return programArguments.keySet().stream()
+            .filter(key ->
+                Arrays.stream(RunnerType.values())
+                    .anyMatch(type -> type.getValue().equalsIgnoreCase(key)))
+            .findFirst()
+            .orElse(null);
     }
 
     private void process(String input) {
@@ -60,7 +76,7 @@ public class ConsoleRunner implements Runner {
                 apiInfo.getInfo();
                 return;
             }
-            ConsoleRequest request = parser.parse(input);
+            ConsoleRequest request = requestParser.parse(input);
             RequestPathMatchResult pathMatchResult = resolver.resolve(request);
             validator.validate(pathMatchResult, request);
             invoker.invoke(pathMatchResult, request);
@@ -69,11 +85,11 @@ public class ConsoleRunner implements Runner {
         }
     }
 
-    private boolean checkInfo(String input) {
-        return RunnerConstant.INFO_COMMAND_NAME.getValue().equalsIgnoreCase(input);
-    }
-
     private boolean checkExit(String input) {
         return RunnerConstant.EXIT_COMMAND_NAME.getValue().equalsIgnoreCase(input);
+    }
+
+    private boolean checkInfo(String input) {
+        return RunnerConstant.INFO_COMMAND_NAME.getValue().equalsIgnoreCase(input);
     }
 }

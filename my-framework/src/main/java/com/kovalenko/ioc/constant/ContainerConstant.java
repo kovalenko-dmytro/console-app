@@ -1,7 +1,6 @@
 package com.kovalenko.ioc.constant;
 
 public enum ContainerConstant {
-
     DOT("."),
     SLASH("/"),
     CLASS_EXTENSION(".class"),

@@ -1,7 +1,6 @@
 package com.kovalenko.ioc.bean.factory;
 
 import com.kovalenko.ioc.bean.factory.stereotype.Controller;
-import com.kovalenko.ioc.bean.factory.stereotype.Launcher;
 import com.kovalenko.ioc.bean.injector.BeanInjector;
 import com.kovalenko.ioc.bean.scanner.BeanScanner;
 import com.kovalenko.ioc.constant.ErrorMessage;
@@ -35,14 +34,6 @@ public class BeanFactory {
     public void init(String packageName) throws BeanCreationException {
         beanScanner.scanPackage(packageName, beans);
         beanInjector.injectDependencies(beans);
-    }
-
-    public List<Object> getLaunchBeans() throws BeanCreationException {
-        checkInitBeans();
-        return beans.values()
-            .stream()
-            .filter(singleton -> singleton.getClass().isAnnotationPresent(Launcher.class))
-            .collect(Collectors.toList());
     }
 
     public List<Object> getControllers() throws BeanCreationException {

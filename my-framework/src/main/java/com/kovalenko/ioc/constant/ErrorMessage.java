@@ -1,7 +1,6 @@
 package com.kovalenko.ioc.constant;
 
 public enum ErrorMessage {
-
     ERROR_PREFIX("ERROR: "),
     CANNOT_LOAD_PACKAGE(ERROR_PREFIX.value + "Cannot load source package"),
     CANNOT_CREATE_BEAN(ERROR_PREFIX.value + "Cannot create bean:"),
@@ -18,7 +17,10 @@ public enum ErrorMessage {
     CANNOT_RESOLVE_REQUEST_PATH(ERROR_PREFIX.value + "Cannot resolve request path"),
     CANNOT_RESOLVE_PATH_VARIABLE(ERROR_PREFIX.value + "Cannot resolve path variable with name: {0} for request path: {1}"),
     CANNOT_FIND_CONSTRAINT_VALIDATOR(ERROR_PREFIX.value + "Cannot find constraint validator"),
-    VALIDATE_MESSAGE(ERROR_PREFIX.value + "<{0}> path variable {1}");
+    VALIDATE_MESSAGE(ERROR_PREFIX.value + "<{0}> path variable {1}"),
+    APP_PROPERTIES_NOT_INIT(ERROR_PREFIX.value + "Application configuration properties weren't initialized"),
+    CANNOT_CONFIGURE_PROPERTIES(ERROR_PREFIX.value + "Cannot configure application properties"),
+    RUNNER_TYPE_NOT_DEFINED(ERROR_PREFIX.value + "Runner type <{0}> not defined");
 
 
     private String value;
