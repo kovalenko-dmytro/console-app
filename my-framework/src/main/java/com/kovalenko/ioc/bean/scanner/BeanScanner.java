@@ -1,5 +1,7 @@
 package com.kovalenko.ioc.bean.scanner;
 
+import com.kovalenko.ioc.annotation.Configuration;
+import com.kovalenko.ioc.bean.factory.annotation.Bean;
 import com.kovalenko.ioc.bean.factory.stereotype.Controller;
 import com.kovalenko.ioc.bean.factory.stereotype.Service;
 import com.kovalenko.ioc.constant.ContainerConstant;
@@ -9,6 +11,7 @@ import com.kovalenko.ioc.exception.BeanCreationException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -58,13 +61,30 @@ public class BeanScanner {
         Class classObject;
         try {
             classObject = Class.forName(packageName.concat(ContainerConstant.DOT.getValue()).concat(className));
+            if (classObject.isAnnotationPresent(Configuration.class)) {
+                findBeansFromConfiguration(classObject, beans);            }
             if (classObject.isAnnotationPresent(Service.class) || classObject.isAnnotationPresent(Controller.class)) {
-                Object instance = classObject.getDeclaredConstructor().newInstance();
-                String beanName = className.substring(0, 1).toLowerCase().concat(className.substring(1));
-                beans.put(beanName, instance);
+                addBeanToContext(beans, className, classObject);
             }
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             throw new BeanCreationException(ErrorMessage.CANNOT_CREATE_BEAN.getValue() + packageName + fileName);
         }
+    }
+
+    private void findBeansFromConfiguration(Class classObject, Map<String, Object> beans) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        for (Method method: classObject.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Bean.class)) {
+                Object invokeObject = classObject.newInstance();
+                Object bean = method.invoke(invokeObject);
+                String beanName = method.getName();
+                beans.put(beanName, bean);
+            }
+        }
+    }
+
+    private void addBeanToContext(Map<String, Object> beans, String className, Class classObject) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Object instance = classObject.getDeclaredConstructor().newInstance();
+        String beanName = className.substring(0, 1).toLowerCase().concat(className.substring(1));
+        beans.put(beanName, instance);
     }
 }

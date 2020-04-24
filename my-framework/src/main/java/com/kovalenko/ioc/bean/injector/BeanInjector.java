@@ -8,6 +8,7 @@ import com.kovalenko.ioc.exception.BeanCreationException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +33,21 @@ public class BeanInjector {
 
     private void findFieldQualifierDependency(Map<String, Object> beans, Object bean, Field field) throws BeanCreationException {
         List<Object> dependencies = findFieldTypeBeanImplementations(beans, field);
-        if (dependencies.size() > 1 && field.getAnnotation(Autowired.class).fullQualifier().isBlank()) {
-            throw new BeanCreationException(ErrorMessage.CANNOT_FIND_QUALIFIER.getValue());
+        if (dependencies.isEmpty()) {
+            throw new BeanCreationException(MessageFormat.format(ErrorMessage.CANNOT_FIND_DEPENDENCY.getValue(), field.getName()));
         }
-        Optional<Object> dependency = findQualifierBeanImplementation(field, dependencies);
-        if (dependency.isEmpty()) {
-            throw new BeanCreationException(ErrorMessage.CANNOT_INJECT_DEPENDENCY.getValue());
+        if (dependencies.size() > 1) {
+            if (field.getAnnotation(Autowired.class).fullQualifier().isBlank()) {
+                throw new BeanCreationException(ErrorMessage.CANNOT_FIND_QUALIFIER.getValue());
+            }
+            Optional<Object> dependency = findQualifierBeanImplementation(field, dependencies);
+            if (dependency.isEmpty()) {
+                throw new BeanCreationException(ErrorMessage.CANNOT_INJECT_DEPENDENCY.getValue());
+            }
+            injectBeanDependency(bean, field, dependency.get());
+        } else {
+            injectBeanDependency(bean, field, dependencies.get(0));
         }
-        injectBeanDependency(bean, field, dependency.get());
     }
 
     private List<Object> findFieldTypeBeanImplementations(Map<String, Object> beans, Field field) {

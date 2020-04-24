@@ -6,6 +6,7 @@ public enum ErrorMessage {
     CANNOT_CREATE_BEAN(ERROR_PREFIX.value + "Cannot create bean:"),
     CANNOT_INJECT_DEPENDENCY(ERROR_PREFIX.value + "Cannot inject dependency for bean: "),
     CANNOT_FIND_QUALIFIER(ERROR_PREFIX.value + "Found several bean implementation. Cannot find bean qualifier"),
+    CANNOT_FIND_DEPENDENCY(ERROR_PREFIX.value + "Cannot find dependencies for bean property: {0}"),
     CANNOT_SCAN_PACKAGE(ERROR_PREFIX.value + "Cannot scan package"),
     CANNOT_FIND_LAUNCHER(ERROR_PREFIX.value + "Cannot find launcher object"),
     ANY_BEAN_NOT_FOUND(ERROR_PREFIX.value + "Any bean not found"),

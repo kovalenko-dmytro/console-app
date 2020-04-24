@@ -3,6 +3,7 @@ package com.kovalenko.controller;
 import com.kovalenko.application.info.annotation.OperationInfo;
 import com.kovalenko.application.info.annotation.OperationParam;
 import com.kovalenko.application.info.annotation.OperationParams;
+import com.kovalenko.application.message.MessageSource;
 import com.kovalenko.application.resolve.annotation.PathVariable;
 import com.kovalenko.application.resolve.annotation.RequestMapping;
 import com.kovalenko.application.validate.constraint.annotation.NotBlank;
@@ -15,6 +16,8 @@ public class FirstController {
 
     @Autowired(fullQualifier = "com.kovalenko.service.one.FirstServiceImpl")
     private FirstService firstService;
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(path = "first {-param}")
     @OperationInfo(
@@ -23,9 +26,14 @@ public class FirstController {
         values = @OperationParams(value = {@OperationParam(name = "-param", description = "test String param")}))
     public void first(@PathVariable(name = "-param") @NotBlank String param) {
         firstService.first(param);
+        System.out.println(messageSource.getMessage("aaa.aaa.aaa", param));
     }
 
     public void setFirstService(FirstService firstService) {
         this.firstService = firstService;
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }

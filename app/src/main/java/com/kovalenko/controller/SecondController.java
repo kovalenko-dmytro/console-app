@@ -15,7 +15,7 @@ import com.kovalenko.service.two.SecondService;
 @Controller
 public class SecondController {
 
-    @Autowired(fullQualifier = "com.kovalenko.service.two.SecondServiceImpl")
+    @Autowired
     private SecondService secondService;
 
     @RequestMapping(path = "second {-param1} {-param2}")
