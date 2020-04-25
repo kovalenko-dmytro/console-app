@@ -5,9 +5,9 @@ import com.kovalenko.application.message.AbstractMessageSource;
 import java.text.MessageFormat;
 import java.util.Locale;
 
-public class ClientMessageSource extends AbstractMessageSource {
+public class CommonMessageSource extends AbstractMessageSource {
 
-    public ClientMessageSource(String resourcePropertiesPath, Locale locale) {
+    public CommonMessageSource(String resourcePropertiesPath, Locale locale) {
         super(resourcePropertiesPath, locale);
     }
 
