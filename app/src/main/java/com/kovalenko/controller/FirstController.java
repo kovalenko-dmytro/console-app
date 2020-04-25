@@ -26,7 +26,7 @@ public class FirstController {
         values = @OperationParams(value = {@OperationParam(name = "-param", description = "test String param")}))
     public void first(@PathVariable(name = "-param") @NotBlank String param) {
         firstService.first(param);
-        System.out.println(messageSource.getMessage("aaa.aaa.aaa", param));
+        System.out.println(messageSource.getMessage("test.test.test", param));
     }
 
     public void setFirstService(FirstService firstService) {

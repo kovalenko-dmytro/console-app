@@ -51,10 +51,12 @@ public class BeanInjector {
     }
 
     private List<Object> findFieldTypeBeanImplementations(Map<String, Object> beans, Field field) {
+        //TODO refactor
         return beans.values().stream()
             .filter(impl ->
                 Arrays.stream(impl.getClass().getInterfaces())
-                    .anyMatch(interfaceClass -> interfaceClass.equals(field.getType())))
+                    .anyMatch(interfaceClass -> interfaceClass.equals(field.getType())) || Arrays.stream(impl.getClass().getSuperclass().getInterfaces()).anyMatch(in -> in.equals(field.getType())))
+
             .collect(Collectors.toList());
     }
 
