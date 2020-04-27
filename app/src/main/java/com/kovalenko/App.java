@@ -1,9 +1,9 @@
 package com.kovalenko;
 
 import com.kovalenko.application.Application;
-import com.kovalenko.ioc.annotation.ScanPackage;
+import com.kovalenko.ioc.annotation.ConsoleApplication;
 
-@ScanPackage
+@ConsoleApplication
 public class App {
 
     public static void main( String[] args ) {
