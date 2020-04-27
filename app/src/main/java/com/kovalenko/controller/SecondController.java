@@ -38,8 +38,4 @@ public class SecondController {
     public void second2(@PathVariable(name = "-file") @FilePath String filePath) {
         secondService.second2(filePath);
     }
-
-    public void setSecondService(SecondService secondService) {
-        this.secondService = secondService;
-    }
 }

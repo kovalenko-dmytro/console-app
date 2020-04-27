@@ -3,12 +3,9 @@ package com.kovalenko.ioc.bean.injector;
 import com.kovalenko.application.message.MessageSource;
 import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.ioc.bean.factory.annotation.Autowired;
-import com.kovalenko.ioc.constant.ContainerConstant;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -73,14 +70,10 @@ public class BeanInjector {
     }
 
     private void injectBeanDependency(Object bean, Field field, Object dependency) throws BeanCreationException {
-        String setterName = ContainerConstant.SETTER_PREFIX.getValue()
-            .concat(field.getName().substring(0, 1).toUpperCase())
-            .concat(field.getName().substring(1));
-        Method setter;
         try {
-            setter = bean.getClass().getMethod(setterName, field.getType());
-            setter.invoke(bean, dependency);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            field.setAccessible(true);
+            field.set(bean, dependency);
+        } catch (IllegalAccessException e) {
             throw new BeanCreationException(messageSource.getMessage("error.cannot.inject.dependency", bean.getClass().toString()));
         }
     }

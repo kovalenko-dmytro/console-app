@@ -32,16 +32,4 @@ public class FirstController {
         serviceWithoutInterface.doSomething();
         System.out.println(messageSource.getMessage("test.test.test", param));
     }
-
-    public void setFirstService(FirstService firstService) {
-        this.firstService = firstService;
-    }
-
-    public void setServiceWithoutInterface(ServiceWithoutInterface serviceWithoutInterface) {
-        this.serviceWithoutInterface = serviceWithoutInterface;
-    }
-
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 }
