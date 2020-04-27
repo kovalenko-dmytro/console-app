@@ -4,7 +4,8 @@ import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.input.RequestParser;
 import com.kovalenko.application.input.constant.InputConstant;
 import com.kovalenko.application.input.entity.ConsoleRequest;
-import com.kovalenko.ioc.constant.ErrorMessage;
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,6 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConsoleRequestParser implements RequestParser<ConsoleRequest> {
+
+    private MessageSource messageSource = SystemMessageSource.getInstance();
 
     @Override
     public ConsoleRequest parse(String input) throws ApplicationException {
@@ -27,7 +30,7 @@ public class ConsoleRequestParser implements RequestParser<ConsoleRequest> {
         if (matcher.find()) {
             return matcher.group().trim();
         }
-        throw new ApplicationException(ErrorMessage.CANNOT_PARSE_REQUEST_PATH.getValue());
+        throw new ApplicationException(messageSource.getMessage("error.cannot.parse.request.path"));
     }
 
     private Map<String, String> getRequestParameters(String input) {

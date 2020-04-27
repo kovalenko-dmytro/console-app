@@ -4,7 +4,8 @@ import com.kovalenko.application.configuration.AppConfiguration;
 import com.kovalenko.application.configuration.ArgumentsParser;
 import com.kovalenko.application.configuration.constant.ConfigurationConstant;
 import com.kovalenko.application.exception.ApplicationException;
-import com.kovalenko.ioc.constant.ErrorMessage;
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -14,6 +15,8 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class ConsoleArgumentsParser implements ArgumentsParser {
+
+    private MessageSource messageSource = SystemMessageSource.getInstance();
 
     @Override
     public Map<String, String> parse(String... args) throws ApplicationException {
@@ -40,7 +43,7 @@ public class ConsoleArgumentsParser implements ArgumentsParser {
             result.load(in);
             return result;
         } catch (Exception e) {
-            throw new ApplicationException(ErrorMessage.CANNOT_CONFIGURE_PROPERTIES.getValue());
+            throw new ApplicationException(messageSource.getMessage("error.cannot.configure.app.properties"));
         }
     }
 }

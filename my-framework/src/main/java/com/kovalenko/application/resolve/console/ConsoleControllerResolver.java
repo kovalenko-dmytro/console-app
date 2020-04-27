@@ -2,24 +2,26 @@ package com.kovalenko.application.resolve.console;
 
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.input.entity.ConsoleRequest;
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.application.resolve.Resolver;
 import com.kovalenko.application.resolve.annotation.PathVariable;
 import com.kovalenko.application.resolve.annotation.RequestMapping;
 import com.kovalenko.application.resolve.constant.ResolveConstant;
 import com.kovalenko.application.resolve.entity.RequestPathMatchResult;
 import com.kovalenko.ioc.bean.factory.BeanFactory;
-import com.kovalenko.ioc.constant.ErrorMessage;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ConsoleControllerResolver implements Resolver<ConsoleRequest, RequestPathMatchResult> {
+
+    private MessageSource messageSource = SystemMessageSource.getInstance();
 
     @Override
     public RequestPathMatchResult resolve(ConsoleRequest request) throws ApplicationException, BeanCreationException {
@@ -42,7 +44,7 @@ public class ConsoleControllerResolver implements Resolver<ConsoleRequest, Reque
                 }
             }
         }
-        throw new ApplicationException(ErrorMessage.CANNOT_RESOLVE_REQUEST_PATH.getValue());
+        throw new ApplicationException(messageSource.getMessage("error.cannot.resolve.request.path", requestPath));
     }
 
     private void checkPathVariables(Method method, ConsoleRequest request) throws ApplicationException {
@@ -50,10 +52,7 @@ public class ConsoleControllerResolver implements Resolver<ConsoleRequest, Reque
                 Arrays.stream(method.getParameters())
                     .filter(filterByPathVariableAnnotation(requestParam))
                     .findFirst()
-                    .orElseThrow(() -> new ApplicationException(MessageFormat.format(
-                        ErrorMessage.CANNOT_RESOLVE_PATH_VARIABLE.getValue(),
-                        requestParam,
-                        method.getAnnotation(RequestMapping.class).path())));
+                    .orElseThrow(() -> new ApplicationException(messageSource.getMessage("error.cannot.resolve.path.variable", requestParam, method.getAnnotation(RequestMapping.class).path())));
         }
     }
 

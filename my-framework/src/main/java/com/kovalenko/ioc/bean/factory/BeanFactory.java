@@ -1,9 +1,10 @@
 package com.kovalenko.ioc.bean.factory;
 
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.ioc.bean.factory.stereotype.Controller;
 import com.kovalenko.ioc.bean.injector.BeanInjector;
 import com.kovalenko.ioc.bean.scanner.BeanScanner;
-import com.kovalenko.ioc.constant.ErrorMessage;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class BeanFactory {
 
     private BeanScanner beanScanner;
     private BeanInjector beanInjector;
+    private MessageSource messageSource = SystemMessageSource.getInstance();
 
     private Map<String, Object> beans = new HashMap<>();
 
@@ -46,7 +48,7 @@ public class BeanFactory {
 
     private void checkInitBeans() throws BeanCreationException {
         if (beans.isEmpty()) {
-            throw new BeanCreationException(ErrorMessage.ANY_BEAN_NOT_FOUND.getValue());
+            throw new BeanCreationException(messageSource.getMessage("error.any.beans.not.found"));
         }
     }
 }

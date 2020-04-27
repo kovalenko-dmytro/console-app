@@ -1,14 +1,14 @@
 package com.kovalenko.ioc.bean.injector;
 
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.ioc.bean.factory.annotation.Autowired;
 import com.kovalenko.ioc.constant.ContainerConstant;
-import com.kovalenko.ioc.constant.ErrorMessage;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BeanInjector {
+
+    private MessageSource messageSource = SystemMessageSource.getInstance();
 
     public void injectDependencies(Map<String, Object> beans) throws BeanCreationException {
         for (Object bean: beans.values()) {
@@ -34,15 +36,15 @@ public class BeanInjector {
     private void findFieldQualifierDependency(Map<String, Object> beans, Object bean, Field field) throws BeanCreationException {
         List<Object> dependencies = findFieldTypeBeanImplementations(beans, field);
         if (dependencies.isEmpty()) {
-            throw new BeanCreationException(MessageFormat.format(ErrorMessage.CANNOT_FIND_DEPENDENCY.getValue(), field.getName()));
+            throw new BeanCreationException(messageSource.getMessage("error.cannot.find.dependency", field.getName()));
         }
         if (dependencies.size() > 1) {
             if (field.getAnnotation(Autowired.class).fullQualifier().isBlank()) {
-                throw new BeanCreationException(ErrorMessage.CANNOT_FIND_QUALIFIER.getValue());
+                throw new BeanCreationException(messageSource.getMessage("error.qualifier.not.defined"));
             }
             Optional<Object> dependency = findQualifierBeanImplementation(field, dependencies);
             if (dependency.isEmpty()) {
-                throw new BeanCreationException(ErrorMessage.CANNOT_INJECT_DEPENDENCY.getValue());
+                throw new BeanCreationException(messageSource.getMessage("error.cannot.find.qualifier", field.getName()));
             }
             injectBeanDependency(bean, field, dependency.get());
         } else {
@@ -84,7 +86,7 @@ public class BeanInjector {
             setter = bean.getClass().getMethod(setterName, field.getType());
             setter.invoke(bean, dependency);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            throw new BeanCreationException(ErrorMessage.CANNOT_INJECT_DEPENDENCY.getValue());
+            throw new BeanCreationException(messageSource.getMessage("error.cannot.inject.dependency", bean.getClass().toString()));
         }
     }
 }

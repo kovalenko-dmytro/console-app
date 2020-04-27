@@ -1,11 +1,12 @@
 package com.kovalenko.ioc.bean.scanner;
 
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.ioc.annotation.Configuration;
 import com.kovalenko.ioc.bean.factory.annotation.Bean;
 import com.kovalenko.ioc.bean.factory.stereotype.Controller;
 import com.kovalenko.ioc.bean.factory.stereotype.Service;
 import com.kovalenko.ioc.constant.ContainerConstant;
-import com.kovalenko.ioc.constant.ErrorMessage;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 import java.io.File;
@@ -20,11 +21,13 @@ import java.util.Objects;
 
 public class BeanScanner {
 
+    private MessageSource messageSource = SystemMessageSource.getInstance();
+
     public void scanPackage(String packageName, Map<String, Object> beans) throws BeanCreationException {
         try {
             analyzeResources(packageName, beans);
         } catch (IOException | URISyntaxException e) {
-            throw new BeanCreationException(ErrorMessage.CANNOT_LOAD_PACKAGE.getValue());
+            throw new BeanCreationException(messageSource.getMessage("error.cannot.load.package", packageName));
         }
     }
 
@@ -67,7 +70,7 @@ public class BeanScanner {
                 addBeanToContext(beans, className, classObject);
             }
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            throw new BeanCreationException(ErrorMessage.CANNOT_CREATE_BEAN.getValue() + packageName + fileName);
+            throw new BeanCreationException(messageSource.getMessage("error.cannot.create.bean", className));
         }
     }
 

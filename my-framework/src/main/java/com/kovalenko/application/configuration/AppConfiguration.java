@@ -1,7 +1,8 @@
 package com.kovalenko.application.configuration;
 
 import com.kovalenko.application.exception.ApplicationException;
-import com.kovalenko.ioc.constant.ErrorMessage;
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 
 import java.util.Objects;
 import java.util.Properties;
@@ -9,6 +10,7 @@ import java.util.Properties;
 public class AppConfiguration {
 
     private Properties properties;
+    private MessageSource messageSource = SystemMessageSource.getInstance();
 
     private AppConfiguration() {}
 
@@ -36,7 +38,7 @@ public class AppConfiguration {
 
     private void checkInitProperties() throws ApplicationException {
         if (Objects.isNull(properties)) {
-            throw new ApplicationException(ErrorMessage.APP_PROPERTIES_NOT_INIT.getValue());
+            throw new ApplicationException(messageSource.getMessage("error.app.config.properties.not.init"));
         }
     }
 }

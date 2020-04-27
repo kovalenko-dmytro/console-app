@@ -1,13 +1,14 @@
 package com.kovalenko.application.runner.factory;
 
 import com.kovalenko.application.exception.ApplicationException;
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.application.runner.constant.RunnerType;
 import com.kovalenko.application.runner.factory.console.ConsoleCommandProvider;
-import com.kovalenko.ioc.constant.ErrorMessage;
-
-import java.text.MessageFormat;
 
 public class CommandProviderFactory {
+
+    private static MessageSource messageSource = SystemMessageSource.getInstance();
 
     public static CommandProvider getProvider(String name) throws ApplicationException {
         RunnerType type = RunnerType.getType(name);
@@ -16,7 +17,7 @@ public class CommandProviderFactory {
                 return new ConsoleCommandProvider();
 
             default:
-                throw new ApplicationException(MessageFormat.format(ErrorMessage.RUNNER_TYPE_NOT_DEFINED.getValue(), type));
+                throw new ApplicationException(messageSource.getMessage("error.runner.type.not.defined", type));
         }
     }
 }

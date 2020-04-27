@@ -2,6 +2,8 @@ package com.kovalenko.application.validate.console;
 
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.input.entity.ConsoleRequest;
+import com.kovalenko.application.message.MessageSource;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.application.resolve.annotation.PathVariable;
 import com.kovalenko.application.resolve.entity.RequestPathMatchResult;
 import com.kovalenko.application.validate.Validator;
@@ -12,11 +14,9 @@ import com.kovalenko.application.validate.constraint.annotation.FilePath;
 import com.kovalenko.application.validate.constraint.annotation.NotBlank;
 import com.kovalenko.application.validate.constraint.annotation.NotEmpty;
 import com.kovalenko.application.validate.constraint.annotation.NotNull;
-import com.kovalenko.ioc.constant.ErrorMessage;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 public class ControllerMethodArgsValidator implements Validator<RequestPathMatchResult, ConsoleRequest> {
 
     private static final Class[] VALIDATE_ANNOTATIONS = new Class[]{FilePath.class, NotNull.class, NotEmpty.class, NotBlank.class};
+
+    private MessageSource messageSource = SystemMessageSource.getInstance();
 
     @Override
     public void validate(RequestPathMatchResult matchResult, ConsoleRequest request) throws ApplicationException {
@@ -47,13 +49,13 @@ public class ControllerMethodArgsValidator implements Validator<RequestPathMatch
         try {
             return (ConstraintValidator) constraintValidatorClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new ApplicationException(ErrorMessage.CANNOT_FIND_CONSTRAINT_VALIDATOR.getValue());
+            throw new ApplicationException(messageSource.getMessage("error.cannot.find.constraint.validator"));
         }
     }
 
     private void handleValidateResult(Annotation annotation, String parameterName) throws ApplicationException {
         String message = annotation.annotationType().getAnnotation(Messaged.class).message();
-        throw new ApplicationException(MessageFormat.format(ErrorMessage.VALIDATE_MESSAGE.getValue(), parameterName, message));
+        throw new ApplicationException(messageSource.getMessage("error.validate.message", parameterName, message));
     }
 
     private List<Annotation> filterValidateAnnotations(Parameter parameter) {
