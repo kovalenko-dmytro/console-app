@@ -1,10 +1,10 @@
 package com.kovalenko.application;
 
 import com.kovalenko.application.exception.ApplicationException;
+import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.application.runner.ApplicationRunner;
 import com.kovalenko.ioc.annotation.ScanPackage;
 import com.kovalenko.ioc.bean.factory.BeanFactory;
-import com.kovalenko.ioc.constant.ErrorMessage;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 public class Application {
@@ -26,10 +26,11 @@ public class Application {
     }
 
     private static String getScanPackageAttribute(Class clazz) throws BeanCreationException {
+        ScanPackage scanPackage;
         if (clazz.isAnnotationPresent(ScanPackage.class)) {
-            ScanPackage scanPackage = (ScanPackage) clazz.getAnnotation(ScanPackage.class);
+            scanPackage = (ScanPackage) clazz.getAnnotation(ScanPackage.class);
             return scanPackage.scanPackage().isBlank() ? clazz.getPackageName() : scanPackage.scanPackage();
         }
-        throw new BeanCreationException(ErrorMessage.CANNOT_SCAN_PACKAGE.getValue());
+        throw new BeanCreationException(SystemMessageSource.getInstance().getMessage("error.annotation.wasnt.defined", ScanPackage.class));
     }
 }
