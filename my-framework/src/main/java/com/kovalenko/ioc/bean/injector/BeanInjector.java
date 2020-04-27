@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class BeanInjector {
@@ -39,42 +40,36 @@ public class BeanInjector {
             throw new BeanCreationException(messageSource.getMessage("error.cannot.find.dependency", field.getName()));
         }
         if (dependencies.size() > 1) {
-            if (field.getAnnotation(Autowired.class).fullQualifier().isBlank()) {
+            String fullQualifier = field.getAnnotation(Autowired.class).fullQualifier();
+            if (fullQualifier.isBlank()) {
                 throw new BeanCreationException(messageSource.getMessage("error.qualifier.not.defined"));
             }
-            Optional<Object> dependency = findQualifierBeanImplementation(field, dependencies);
-            if (dependency.isEmpty()) {
-                throw new BeanCreationException(messageSource.getMessage("error.cannot.find.qualifier", field.getName()));
-            }
-            injectBeanDependency(bean, field, dependency.get());
+            Object dependency = Optional
+                .ofNullable(beans.get(fullQualifier))
+                .orElseThrow(() -> new BeanCreationException(messageSource.getMessage("error.cannot.find.qualifier", fullQualifier, field.getName())));
+            injectBeanDependency(bean, field, dependency);
         } else {
             injectBeanDependency(bean, field, dependencies.get(0));
         }
     }
 
     private List<Object> findFieldTypeBeanImplementations(Map<String, Object> beans, Field field) {
-        //TODO refactor
         return beans.values().stream()
             .filter(impl ->
-                Arrays.stream(impl.getClass().getInterfaces())
-                    .anyMatch(interfaceClass -> interfaceClass.equals(field.getType())) || Arrays.stream(impl.getClass().getSuperclass().getInterfaces()).anyMatch(in -> in.equals(field.getType())))
-
+                Arrays.stream(impl.getClass().getInterfaces()).anyMatch(filterByInterfaceEqual(field)) ||
+                    Arrays.stream(impl.getClass().getSuperclass().getInterfaces()).anyMatch(filterByInterfaceEqual(field)))
             .collect(Collectors.toList());
     }
 
-    private Optional<Object> findQualifierBeanImplementation(Field field, List<Object> dependencies) {
-        return dependencies
-            .stream()
-            .filter(impl -> field.getAnnotation(Autowired.class).fullQualifier().equals(impl.getClass().getName()))
-            .findFirst();
+    private Predicate<Class<?>> filterByInterfaceEqual(Field field) {
+        return interfaceClass -> interfaceClass.equals(field.getType());
     }
 
     private void findFieldDependency(Map<String, Object> beans, Object bean, Field field) throws BeanCreationException {
-        for (Object dependency: beans.values()) {
-            if (dependency.getClass().equals(field.getType())) {
-                injectBeanDependency(bean, field, dependency);
-            }
-        }
+        Object dependency = Optional
+            .ofNullable(beans.get(field.getType().getCanonicalName()))
+            .orElseThrow(() -> new BeanCreationException(messageSource.getMessage("error.cannot.find.dependency", field.getName())));
+        injectBeanDependency(bean, field, dependency);
     }
 
     private void injectBeanDependency(Object bean, Field field, Object dependency) throws BeanCreationException {

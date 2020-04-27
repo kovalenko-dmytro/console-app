@@ -10,12 +10,15 @@ import com.kovalenko.application.validate.constraint.annotation.NotBlank;
 import com.kovalenko.ioc.bean.factory.annotation.Autowired;
 import com.kovalenko.ioc.bean.factory.stereotype.Controller;
 import com.kovalenko.service.one.FirstService;
+import com.kovalenko.service.one.ServiceWithoutInterface;
 
 @Controller
 public class FirstController {
 
     @Autowired(fullQualifier = "com.kovalenko.service.one.FirstServiceImpl")
     private FirstService firstService;
+    @Autowired
+    private ServiceWithoutInterface serviceWithoutInterface;
     @Autowired
     private MessageSource messageSource;
 
@@ -26,11 +29,16 @@ public class FirstController {
         values = @OperationParams(value = {@OperationParam(name = "-param", description = "test String param")}))
     public void first(@PathVariable(name = "-param") @NotBlank String param) {
         firstService.first(param);
+        serviceWithoutInterface.doSomething();
         System.out.println(messageSource.getMessage("test.test.test", param));
     }
 
     public void setFirstService(FirstService firstService) {
         this.firstService = firstService;
+    }
+
+    public void setServiceWithoutInterface(ServiceWithoutInterface serviceWithoutInterface) {
+        this.serviceWithoutInterface = serviceWithoutInterface;
     }
 
     public void setMessageSource(MessageSource messageSource) {

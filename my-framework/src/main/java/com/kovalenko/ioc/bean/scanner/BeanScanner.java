@@ -79,15 +79,13 @@ public class BeanScanner {
             if (method.isAnnotationPresent(Bean.class)) {
                 Object invokeObject = classObject.newInstance();
                 Object bean = method.invoke(invokeObject);
-                String beanName = method.getName();
-                beans.put(beanName, bean);
+                beans.put(bean.getClass().getCanonicalName(), bean);
             }
         }
     }
 
     private void addBeanToContext(Map<String, Object> beans, String className, Class classObject) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        Object instance = classObject.getDeclaredConstructor().newInstance();
-        String beanName = className.substring(0, 1).toLowerCase().concat(className.substring(1));
-        beans.put(beanName, instance);
+        Object instance = classObject.newInstance();
+        beans.put(classObject.getCanonicalName(), instance);
     }
 }
