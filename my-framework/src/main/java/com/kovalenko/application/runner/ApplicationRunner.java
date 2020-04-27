@@ -1,7 +1,5 @@
 package com.kovalenko.application.runner;
 
-import com.kovalenko.application.configuration.ArgumentsParser;
-import com.kovalenko.application.configuration.console.ConsoleArgumentsParser;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.info.ApiInfo;
 import com.kovalenko.application.info.console.ConsoleApiInfo;
@@ -26,7 +24,6 @@ import java.util.Map;
 
 public class ApplicationRunner {
 
-    private ArgumentsParser argumentsParser;
     private RequestParser<ConsoleRequest> requestParser;
     private Resolver<ConsoleRequest, RequestPathMatchResult> resolver;
     private Validator<RequestPathMatchResult, ConsoleRequest> validator;
@@ -34,7 +31,6 @@ public class ApplicationRunner {
     private ApiInfo apiInfo;
 
     private ApplicationRunner() {
-        argumentsParser = new ConsoleArgumentsParser();
         requestParser = new ConsoleRequestParser();
         resolver = new ConsoleControllerResolver();
         validator = new ControllerMethodArgsValidator();
@@ -50,9 +46,8 @@ public class ApplicationRunner {
         return RunnerHolder.instance;
     }
 
-    public void run(String ... args) throws ApplicationException {
-        Map<String, String> programArguments = argumentsParser.parse(args);
-        CommandProvider provider = CommandProviderFactory.getProvider(findRunnerType(programArguments));
+    public void run(Map<String, String> arguments) throws ApplicationException {
+        CommandProvider provider = CommandProviderFactory.getProvider(findRunnerType(arguments));
         String input;
         while (true) {
             input = provider.nextCommand();

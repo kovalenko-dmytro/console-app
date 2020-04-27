@@ -1,5 +1,7 @@
 package com.kovalenko.application;
 
+import com.kovalenko.application.configuration.ArgumentsParser;
+import com.kovalenko.application.configuration.console.ConsoleArgumentsParser;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.application.runner.ApplicationRunner;
@@ -7,14 +9,19 @@ import com.kovalenko.ioc.annotation.ConsoleApplication;
 import com.kovalenko.ioc.bean.factory.BeanFactory;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
+import java.util.Map;
+
 public class Application {
+
+    private static final ArgumentsParser argumentsParser = new ConsoleArgumentsParser();
 
     private Application(){}
 
     public static void launch(Class clazz, String... args) {
         try {
+            Map<String, String> arguments = argumentsParser.parse(args);
             instantiateBeans(clazz);
-            ApplicationRunner.getInstance().run(args);
+            ApplicationRunner.getInstance().run(arguments);
         } catch (ApplicationException | BeanCreationException e) {
             System.out.println(e.getMessage());
         }
