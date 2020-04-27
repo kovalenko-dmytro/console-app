@@ -1,6 +1,8 @@
 package com.kovalenko.application;
 
+import com.kovalenko.application.configuration.AppConfigurationInitializer;
 import com.kovalenko.application.configuration.ArgumentsParser;
+import com.kovalenko.application.configuration.console.ConsoleAppConfigurationInitializer;
 import com.kovalenko.application.configuration.console.ConsoleArgumentsParser;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.message.impl.SystemMessageSource;
@@ -14,12 +16,14 @@ import java.util.Map;
 public class Application {
 
     private static final ArgumentsParser argumentsParser = new ConsoleArgumentsParser();
+    private static final AppConfigurationInitializer configurationInitializer = new ConsoleAppConfigurationInitializer();
 
     private Application(){}
 
     public static void launch(Class clazz, String... args) {
         try {
             Map<String, String> arguments = argumentsParser.parse(args);
+            configurationInitializer.initAppConfiguration(arguments);
             instantiateBeans(clazz);
             ApplicationRunner.getInstance().run(arguments);
         } catch (ApplicationException | BeanCreationException e) {
