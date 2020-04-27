@@ -18,6 +18,7 @@ public abstract class AbstractMessageSource implements MessageSource{
         return MessageFormat.format(resourceBundle.getString(propertyKey), params);
     }
 
+    @Override
     public void setLocale(String languageTag) {
         this.locale = Locale.forLanguageTag(languageTag);
     }
