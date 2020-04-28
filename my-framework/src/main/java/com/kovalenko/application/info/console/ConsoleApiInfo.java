@@ -23,33 +23,18 @@ public class ConsoleApiInfo implements ApiInfo {
         List<Method> methods = findRequestMappingMethods();
         List<Info> result = new ArrayList<>();
         for (Method method: methods) {
-            System.out.println(ApiInfoConstant.API_DELIMITER.getValue());
             if (method.isAnnotationPresent(OperationInfo.class)) {
                 result.add(getDeclaredInfo(method));
             } else {
                 result.add(getDefaultInfo(method));
             }
         }
-        System.out.println(ApiInfoConstant.API_DELIMITER.getValue());
         return result;
     }
 
     private Info getDeclaredInfo(Method method) {
         OperationInfo operationInfo = method.getAnnotation(OperationInfo.class);
-        System.out.println(ApiInfoConstant.API_DECLARATION.getValue().concat(operationInfo.api()));
-        System.out.println(ApiInfoConstant.API_DESCRIPTION.getValue().concat(operationInfo.description()));
-        getParamsDeclaredInfo(operationInfo);
         return new Info(operationInfo.api(), operationInfo.description(), getOperationParameters(operationInfo));
-    }
-
-    private void getParamsDeclaredInfo(OperationInfo operationInfo) {
-        OperationParam[] operationParams = operationInfo.values().value();
-        Arrays.stream(operationParams).forEach(operationParam -> System.out.println(
-            ApiInfoConstant.API_PATH_VAR_DECLARATION.getValue()
-                .concat(operationParam.name())
-                .concat(ApiInfoConstant.API_PATH_VAR_DESCRIPTION.getValue())
-                .concat(operationParam.description())));
-
     }
 
     private List<OperationParameter> getOperationParameters(OperationInfo operationInfo) {
@@ -60,8 +45,6 @@ public class ConsoleApiInfo implements ApiInfo {
     }
 
     private Info getDefaultInfo(Method method) {
-        System.out.println(ApiInfoConstant.API_DECLARATION.getValue().concat(method.getAnnotation(RequestMapping.class).path()));
-        System.out.println(ApiInfoConstant.API_DEFAULT_DESCRIPTION.getValue());
         return new Info(method.getAnnotation(RequestMapping.class).path(), ApiInfoConstant.API_DEFAULT_DESCRIPTION.getValue());
     }
 

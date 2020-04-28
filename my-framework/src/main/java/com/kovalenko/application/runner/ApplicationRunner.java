@@ -3,6 +3,7 @@ package com.kovalenko.application.runner;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.info.ApiInfo;
 import com.kovalenko.application.info.console.ConsoleApiInfo;
+import com.kovalenko.application.info.entity.Info;
 import com.kovalenko.application.input.RequestParser;
 import com.kovalenko.application.input.console.ConsoleRequestParser;
 import com.kovalenko.application.input.entity.ConsoleRequest;
@@ -20,6 +21,7 @@ import com.kovalenko.application.validate.console.ControllerMethodArgsValidator;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class ApplicationRunner {
@@ -68,7 +70,8 @@ public class ApplicationRunner {
     private void process(String input) {
         try {
             if (checkInfo(input)) {
-                apiInfo.getInfo();
+                List<Info> info = apiInfo.getInfo();
+                info.forEach(Info::print);
                 return;
             }
             ConsoleRequest request = requestParser.parse(input);
