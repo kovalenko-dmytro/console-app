@@ -14,4 +14,9 @@ public class ConsoleRequestReader implements RequestReader<String> {
         System.out.print(InputConstant.NEW_COMMAND_START.getValue());
         return scanner.nextLine();
     }
+
+    @Override
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
 }
