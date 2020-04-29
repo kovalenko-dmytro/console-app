@@ -22,4 +22,9 @@ public abstract class AbstractMessageSource implements MessageSource{
     public void setLocale(String languageTag) {
         this.locale = Locale.forLanguageTag(languageTag);
     }
+
+    @Override
+    public Locale getLocale() {
+        return locale;
+    }
 }
