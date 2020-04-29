@@ -4,5 +4,5 @@ import java.util.Scanner;
 
 public interface RequestReader<T> {
     T read();
-    void setScanner(Scanner scanner);
+    default void setScanner(Scanner scanner) {}
 }

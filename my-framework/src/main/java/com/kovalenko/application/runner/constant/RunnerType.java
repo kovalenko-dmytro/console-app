@@ -6,7 +6,8 @@ public enum RunnerType {
 
     CONSOLE("console"),
     SCRIPT("-script"),
-    XML("-xml");
+    XML("-xml"),
+    UNDEFINED("undefined");
 
     private String value;
 
@@ -22,6 +23,6 @@ public enum RunnerType {
         return Arrays.stream(RunnerType.values())
             .filter(type -> type.getValue().equalsIgnoreCase(name))
             .findFirst()
-            .orElse(CONSOLE);
+            .orElse(UNDEFINED);
     }
 }

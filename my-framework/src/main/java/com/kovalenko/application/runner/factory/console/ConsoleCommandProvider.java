@@ -1,22 +1,14 @@
 package com.kovalenko.application.runner.factory.console;
 
 import com.kovalenko.application.input.RequestReader;
-import com.kovalenko.application.input.console.ConsoleRequestReader;
 import com.kovalenko.application.runner.constant.RunnerConstant;
-import com.kovalenko.application.runner.factory.CommandProvider;
+import com.kovalenko.application.runner.factory.AbstractCommandProvider;
 
-public class ConsoleCommandProvider implements CommandProvider {
+public class ConsoleCommandProvider extends AbstractCommandProvider {
 
-    private RequestReader<String> reader;
-
-    public ConsoleCommandProvider() {
-        reader = new ConsoleRequestReader();
+    public ConsoleCommandProvider(RequestReader<String> reader) {
+        super(reader);
         printPreview();
-    }
-
-    @Override
-    public String nextCommand() {
-        return reader.read();
     }
 
     private void printPreview() {
