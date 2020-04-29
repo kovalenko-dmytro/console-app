@@ -7,17 +7,11 @@ import java.util.Scanner;
 
 public class ConsoleRequestReader implements RequestReader<String> {
 
-
+    private Scanner scanner = new Scanner(System.in);
 
     @Override
     public String read() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.print(InputConstant.NEW_COMMAND_START.getValue());
-            String input = scanner.nextLine();
-            if(!input.isBlank()) {
-                return input;
-            }
-        }
+        System.out.print(InputConstant.NEW_COMMAND_START.getValue());
+        return scanner.nextLine();
     }
 }
