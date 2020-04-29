@@ -1,6 +1,7 @@
 package com.kovalenko.application.runner.constant;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public enum RunnerType {
 
@@ -20,9 +21,8 @@ public enum RunnerType {
     }
 
     public static RunnerType getType(String name) {
-        return Arrays.stream(RunnerType.values())
-            .filter(type -> type.getValue().equalsIgnoreCase(name))
-            .findFirst()
-            .orElse(UNDEFINED);
+        return Objects.isNull(name)
+            ? CONSOLE
+            : Arrays.stream(RunnerType.values()).filter(type -> type.getValue().equalsIgnoreCase(name)).findFirst().orElse(UNDEFINED);
     }
 }
