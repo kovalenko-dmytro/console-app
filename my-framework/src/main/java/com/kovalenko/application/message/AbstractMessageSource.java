@@ -27,4 +27,9 @@ public abstract class AbstractMessageSource implements MessageSource{
     public Locale getLocale() {
         return locale;
     }
+
+    @Override
+    public void setResourcePropertiesPath(String resourcePropertiesPath) {
+        resourceBundle = ResourceBundle.getBundle(resourcePropertiesPath, locale);
+    }
 }

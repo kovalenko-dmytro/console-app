@@ -22,7 +22,7 @@ class ConsoleArgumentsParserTest {
     }
 
     @Test
-    void parse() {
+    void parseProgramArguments() {
         ArgumentsParser parser = new ConsoleArgumentsParser();
         Map<String, String> actual = parser.parse(args);
 

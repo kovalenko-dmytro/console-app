@@ -6,4 +6,5 @@ public interface MessageSource {
     String getMessage(String propertyKey, Object ... params);
     void setLocale(String languageTag);
     Locale getLocale();
+    void setResourcePropertiesPath(String resourcePropertiesPath);
 }

@@ -24,7 +24,7 @@ class ConsoleControllerMethodInvokerTest {
 
     private RequestParser<ConsoleRequest> parser = new ConsoleRequestParser();
     private Resolver<ConsoleRequest, RequestPathMatchResult> resolver = new ConsoleControllerResolver();
-    Invoker<RequestPathMatchResult, ConsoleRequest> invoker = new ConsoleControllerMethodInvoker();
+    private Invoker<RequestPathMatchResult, ConsoleRequest> invoker = new ConsoleControllerMethodInvoker();
 
     @BeforeAll
     static void setAll() throws BeanCreationException {
@@ -38,7 +38,7 @@ class ConsoleControllerMethodInvokerTest {
     }
 
     @Test
-    void invoke() {
+    void invokeControllerMethod() {
         assertDoesNotThrow(() -> invoker.invoke(requestPathMatchResult, consoleRequest));
     }
 }

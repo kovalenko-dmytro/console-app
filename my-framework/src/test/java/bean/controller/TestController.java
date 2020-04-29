@@ -36,4 +36,9 @@ public class TestController {
     public void test2(@PathVariable(name = "param") String param) {
 
     }
+
+    @RequestMapping(path = "check path var {-param}")
+    public void test3(String param) {
+
+    }
 }
