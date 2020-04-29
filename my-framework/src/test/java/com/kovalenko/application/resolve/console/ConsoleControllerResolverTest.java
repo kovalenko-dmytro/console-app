@@ -1,5 +1,6 @@
 package com.kovalenko.application.resolve.console;
 
+import com.kovalenko.application.BaseTest;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.input.RequestParser;
 import com.kovalenko.application.input.console.ConsoleRequestParser;
@@ -8,14 +9,12 @@ import com.kovalenko.application.message.MessageSource;
 import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.application.resolve.Resolver;
 import com.kovalenko.application.resolve.entity.RequestPathMatchResult;
-import com.kovalenko.ioc.bean.factory.BeanFactory;
 import com.kovalenko.ioc.exception.BeanCreationException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConsoleControllerResolverTest {
+class ConsoleControllerResolverTest extends BaseTest {
 
     private static final String VALID_TEST_COMMAND = "test -param1 value1 -param2 value2 -param3 value3";
     private static final String INVALID_TEST_COMMAND = "invalid -param1 value1 -param2 value2 -param3 value3";
@@ -29,11 +28,6 @@ class ConsoleControllerResolverTest {
     private RequestParser<ConsoleRequest> parser = new ConsoleRequestParser();
     private Resolver<ConsoleRequest, RequestPathMatchResult> resolver = new ConsoleControllerResolver();
     private MessageSource messageSource = SystemMessageSource.getInstance();
-
-    @BeforeAll
-    static void setAll() throws BeanCreationException {
-        BeanFactory.getInstance().init("bean");
-    }
 
     @Test
     void resolveControllerMethod() throws ApplicationException, BeanCreationException {

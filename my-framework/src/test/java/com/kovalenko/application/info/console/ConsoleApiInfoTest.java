@@ -1,28 +1,22 @@
 package com.kovalenko.application.info.console;
 
+import com.kovalenko.application.BaseTest;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.application.info.ApiInfo;
 import com.kovalenko.application.info.constant.ApiInfoConstant;
 import com.kovalenko.application.info.entity.Info;
-import com.kovalenko.ioc.bean.factory.BeanFactory;
 import com.kovalenko.ioc.exception.BeanCreationException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConsoleApiInfoTest {
+class ConsoleApiInfoTest extends BaseTest {
 
     private static final String INFO_ANNOTATED_REQUEST_PATH = "test {-param1} {-param2} {-param3}";
     private static final String INFO_ANNOTATED_DESC = "test api";
     private static final String INFO_NOT_ANNOTATED_REQUEST_PATH = "test {-param}";
-
-    @BeforeAll
-    static void setAll() throws BeanCreationException {
-        BeanFactory.getInstance().init("bean");
-    }
 
     @Test
     void getInfo() throws ApplicationException, BeanCreationException {
