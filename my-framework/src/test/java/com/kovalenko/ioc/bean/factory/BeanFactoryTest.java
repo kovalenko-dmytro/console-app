@@ -5,6 +5,7 @@ import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.ioc.exception.BeanCreationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import test.constant.TestConstant;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ class BeanFactoryTest {
 
     @Test
     void initBeans() throws BeanCreationException {
-        BeanFactory.getInstance().init("test.common");
+        BeanFactory.getInstance().init(TestConstant.COMMON_PACKAGE_FOR_TEST.getValue());
 
         Map<String, Object> actual = BeanFactory.getInstance().getBeans();
 
@@ -37,7 +38,7 @@ class BeanFactoryTest {
 
     @Test
     void whenBeansInitializedShouldReturnControllers() throws BeanCreationException {
-        BeanFactory.getInstance().init("test.common");
+        BeanFactory.getInstance().init(TestConstant.COMMON_PACKAGE_FOR_TEST.getValue());
 
         List<Object> actual = BeanFactory.getInstance().getControllers();
 
