@@ -38,7 +38,7 @@ class ConsoleControllerResolverTest extends BaseTest {
 
         assertNotNull(actual);
         assertNotNull(actual.getController());
-        assertEquals("test.controller.TestController", actual.getController().getClass().getCanonicalName());
+        assertEquals("test.common.controller.TestController", actual.getController().getClass().getCanonicalName());
         assertNotNull(actual.getRequestPathMethod());
         assertNotNull(actual.getParameterTypes());
         assertNotEquals(0, actual.getParameterTypes().length);

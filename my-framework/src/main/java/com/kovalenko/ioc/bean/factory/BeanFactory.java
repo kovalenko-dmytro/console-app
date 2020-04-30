@@ -38,6 +38,15 @@ public class BeanFactory {
         beanInjector.injectDependencies(beans);
     }
 
+    public Map<String, Object> getBeans() throws BeanCreationException {
+        checkInitBeans();
+        return beans;
+    }
+
+    public void clearBeanContainer() {
+        beans.clear();
+    }
+
     public List<Object> getControllers() throws BeanCreationException {
         checkInitBeans();
         return beans.values()

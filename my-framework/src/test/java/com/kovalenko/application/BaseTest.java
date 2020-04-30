@@ -8,6 +8,6 @@ public abstract class BaseTest {
 
     @BeforeAll
     static void setAll() throws BeanCreationException {
-        BeanFactory.getInstance().init("test");
+        BeanFactory.getInstance().init("test.common");
     }
 }

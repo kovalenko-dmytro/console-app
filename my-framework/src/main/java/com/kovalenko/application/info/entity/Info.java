@@ -10,9 +10,6 @@ public class Info {
     private String description;
     private List<OperationParameter> operationParameters;
 
-    public Info() {
-    }
-
     public Info(String api, String description) {
         this.api = api;
         this.description = description;
@@ -35,16 +32,8 @@ public class Info {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public List<OperationParameter> getOperationParameters() {
         return operationParameters;
-    }
-
-    public void setOperationParameters(List<OperationParameter> operationParameters) {
-        this.operationParameters = operationParameters;
     }
 
     public void print() {

@@ -1,7 +1,7 @@
-package test.service.impl;
+package test.common.service.impl;
 
 import com.kovalenko.ioc.bean.factory.stereotype.Service;
-import test.service.FirstTestService;
+import test.common.service.FirstTestService;
 
 @Service
 public class FirstTestServiceImpl implements FirstTestService {

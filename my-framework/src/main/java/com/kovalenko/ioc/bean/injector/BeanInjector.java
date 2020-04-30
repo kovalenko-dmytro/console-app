@@ -22,7 +22,7 @@ public class BeanInjector {
             for (Field field: bean.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Autowired.class)) {
                     if (field.getType().isInterface()) {
-                        findFieldQualifierDependency(beans, bean, field);
+                        findSuperClassFieldTypeDependency(beans, bean, field);
                     } else {
                         findFieldDependency(beans, bean, field);
                     }
@@ -31,7 +31,7 @@ public class BeanInjector {
         }
     }
 
-    private void findFieldQualifierDependency(Map<String, Object> beans, Object bean, Field field) throws BeanCreationException {
+    private void findSuperClassFieldTypeDependency(Map<String, Object> beans, Object bean, Field field) throws BeanCreationException {
         List<Object> dependencies = findFieldTypeBeanImplementations(beans, field);
         if (dependencies.isEmpty()) {
             throw new BeanCreationException(messageSource.getMessage("error.cannot.find.dependency", field.getName()));
