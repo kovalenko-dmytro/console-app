@@ -7,6 +7,7 @@ import com.kovalenko.application.info.annotation.OperationParams;
 import com.kovalenko.application.resolve.annotation.PathVariable;
 import com.kovalenko.application.resolve.annotation.RequestMapping;
 import com.kovalenko.application.validate.constraint.annotation.FilePath;
+import com.kovalenko.application.validate.constraint.annotation.NotBlank;
 import com.kovalenko.application.validate.constraint.annotation.NotEmpty;
 import com.kovalenko.application.validate.constraint.annotation.NotNull;
 import com.kovalenko.ioc.bean.factory.annotation.Autowired;
@@ -33,7 +34,25 @@ public class TestController {
     }
 
     @RequestMapping(path = "test {-param}")
-    public void test2(@PathVariable(name = "param") String param) {
+    public void test2(@PathVariable(name = "param") String param) {}
+
+    @RequestMapping(path = "test not null {-param}")
+    public void testNotNullParam(@PathVariable(name = "-param") @NotNull String param) {
+
+    }
+
+    @RequestMapping(path = "test not empty {-param}")
+    public void testNotEmptyParam(@PathVariable(name = "-param") @NotEmpty String param) {
+
+    }
+
+    @RequestMapping(path = "test not blank {-param}")
+    public void testNotBlankParam(@PathVariable(name = "-param") @NotBlank String param) {
+
+    }
+
+    @RequestMapping(path = "test not file path {-param}")
+    public void testFilePathParam(@PathVariable(name = "-param") @FilePath String param) {
 
     }
 
