@@ -1,10 +1,10 @@
 package com.kovalenko.application;
 
-import bean.NotAnnotatedLaunchClass;
 import com.kovalenko.application.message.MessageSource;
 import com.kovalenko.application.message.impl.SystemMessageSource;
 import com.kovalenko.ioc.annotation.ConsoleApplication;
 import org.junit.jupiter.api.Test;
+import test.NotAnnotatedLaunchClass;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

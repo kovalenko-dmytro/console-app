@@ -1,4 +1,4 @@
-package bean;
+package test;
 
 public class NotAnnotatedLaunchClass {
 

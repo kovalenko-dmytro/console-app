@@ -1,6 +1,5 @@
-package bean.controller;
+package test.controller;
 
-import bean.service.FirstTestService;
 import com.kovalenko.application.info.annotation.OperationInfo;
 import com.kovalenko.application.info.annotation.OperationParam;
 import com.kovalenko.application.info.annotation.OperationParams;
@@ -12,6 +11,7 @@ import com.kovalenko.application.validate.constraint.annotation.NotEmpty;
 import com.kovalenko.application.validate.constraint.annotation.NotNull;
 import com.kovalenko.ioc.bean.factory.annotation.Autowired;
 import com.kovalenko.ioc.bean.factory.stereotype.Controller;
+import test.service.FirstTestService;
 
 @Controller
 public class TestController {
