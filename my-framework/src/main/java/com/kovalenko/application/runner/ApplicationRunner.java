@@ -18,6 +18,7 @@ import com.kovalenko.application.runner.factory.CommandProvider;
 import com.kovalenko.application.runner.factory.CommandProviderFactory;
 import com.kovalenko.application.validate.Validator;
 import com.kovalenko.application.validate.console.ControllerMethodArgsValidator;
+import com.kovalenko.application.view.render.ViewRenderer;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class ApplicationRunner {
     private Resolver<ConsoleRequest, RequestPathMatchResult> resolver;
     private Validator<RequestPathMatchResult, ConsoleRequest> validator;
     private Invoker<RequestPathMatchResult, ConsoleRequest> invoker;
+    private ViewRenderer renderer;
     private ApiInfo apiInfo;
 
     private ApplicationRunner() {
@@ -37,6 +39,7 @@ public class ApplicationRunner {
         resolver = new ConsoleControllerResolver();
         validator = new ControllerMethodArgsValidator();
         invoker = new ConsoleControllerMethodInvoker();
+        renderer = new ViewRenderer();
         apiInfo = new ConsoleApiInfo();
     }
 
@@ -77,7 +80,8 @@ public class ApplicationRunner {
             ConsoleRequest request = requestParser.parse(input);
             RequestPathMatchResult pathMatchResult = resolver.resolve(request);
             validator.validate(pathMatchResult, request);
-            invoker.invoke(pathMatchResult, request);
+            Object response = invoker.invoke(pathMatchResult, request);
+            renderer.render(response);
         } catch (ApplicationException | BeanCreationException e) {
             System.out.println(e.getMessage());
         }

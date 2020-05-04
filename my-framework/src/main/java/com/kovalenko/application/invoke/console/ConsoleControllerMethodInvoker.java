@@ -21,10 +21,10 @@ public class ConsoleControllerMethodInvoker implements Invoker<RequestPathMatchR
     private MessageSource messageSource = SystemMessageSource.getInstance();
 
     @Override
-    public void invoke(RequestPathMatchResult matchResult, ConsoleRequest consoleRequest) throws ApplicationException {
+    public Object invoke(RequestPathMatchResult matchResult, ConsoleRequest consoleRequest) throws ApplicationException {
         Method pathMatchMethod = matchResult.getRequestPathMethod();
         try {
-            pathMatchMethod.invoke(matchResult.getController(), mapRequestParameters(pathMatchMethod, consoleRequest));
+            return pathMatchMethod.invoke(matchResult.getController(), mapRequestParameters(pathMatchMethod, consoleRequest));
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new ApplicationException(messageSource.getMessage("error.cannot.invoke.controller.method", matchResult.getRequestPathMethod().getName()));
         }
