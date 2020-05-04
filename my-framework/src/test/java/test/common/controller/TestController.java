@@ -9,9 +9,14 @@ import com.kovalenko.application.validate.constraint.annotation.FilePath;
 import com.kovalenko.application.validate.constraint.annotation.NotBlank;
 import com.kovalenko.application.validate.constraint.annotation.NotEmpty;
 import com.kovalenko.application.validate.constraint.annotation.NotNull;
+import com.kovalenko.application.view.view.ConsoleView;
+import com.kovalenko.application.view.view.ResponseStatus;
 import com.kovalenko.ioc.bean.factory.annotation.Autowired;
 import com.kovalenko.ioc.bean.factory.stereotype.Controller;
 import test.common.service.FirstTestService;
+import test.common.view.TestView;
+
+import java.util.List;
 
 @Controller
 public class TestController {
@@ -59,5 +64,26 @@ public class TestController {
     @RequestMapping(path = "check path var {-param}")
     public void test3(String param) {
 
+    }
+
+    @RequestMapping(path = "test void {-param}")
+    public void testVoid(@PathVariable(name = "-param") @NotNull String param) {
+
+    }
+
+    @RequestMapping(path = "test string {-param}")
+    public String testReturnString(@PathVariable(name = "-param") @NotNull String param) {
+        return param;
+    }
+
+    @RequestMapping(path = "test view {-param1} {-param2} {-param3}")
+    public ConsoleView<List<String>> testVoid(@PathVariable(name = "-param1") @NotNull String param1,
+                                              @PathVariable(name = "-param2") @NotNull String param2,
+                                              @PathVariable(name = "-param3") @NotNull String param3) {
+        ConsoleView<List<String>> view = new TestView();
+        view.setResponseStatus(ResponseStatus.OK);
+        view.setErrorMessage("no error message");
+        view.setBody(List.of(param1, param2, param3));
+        return view;
     }
 }
