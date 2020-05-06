@@ -1,5 +1,6 @@
 package com.kovalenko.application.runner.factory.console;
 
+import com.kovalenko.application.commoncommand.CommonCommandType;
 import com.kovalenko.application.input.RequestReader;
 import com.kovalenko.application.input.console.ConsoleRequestReader;
 import com.kovalenko.application.input.constant.InputConstant;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ConsoleCommandProviderTest {
 
-    private static final String TEST_COMMAND = "test command";
+    private static final String TEST_COMMAND = "test commoncommand";
     private RequestReader<String> requestReader = new ConsoleRequestReader();
     private InputStream stdin = System.in;
     private PrintStream stdout = System.out;
@@ -48,8 +49,7 @@ class ConsoleCommandProviderTest {
     private String getExpectedConsoleOutput() {
         return Stream
             .of(RunnerConstant.PLEASE_ENTER_REQUEST_COMMAND.getValue(),
-                RunnerConstant.INFO_TO_VIEW_AVAILABLE_API_INFO.getValue(),
-                RunnerConstant.EXIT_TO_EXIT_FROM_PROGRAM.getValue(),
+                CommonCommandType.getDescriptions().stream().collect(Collectors.joining(System.lineSeparator())),
                 InputConstant.NEW_COMMAND_START.getValue())
             .collect(Collectors.joining(System.lineSeparator()));
     }

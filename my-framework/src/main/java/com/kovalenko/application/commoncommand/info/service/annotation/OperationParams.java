@@ -1,14 +1,12 @@
-package com.kovalenko.application.info.annotation;
+package com.kovalenko.application.commoncommand.info.service.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OperationInfo {
-    String api();
-    String description();
-    OperationParams values();
+public @interface OperationParams {
+    OperationParam[] value();
 }

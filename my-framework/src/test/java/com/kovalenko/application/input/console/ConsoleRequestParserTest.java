@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ConsoleRequestParserTest {
 
     private static final String INVALID_TEST_INPUT = "-wrong input";
-    private static final String VALID_TEST_INPUT = "test command -param1 value1 -param2 value2";
-    private static final String TEST_COMMAND = "test command";
+    private static final String VALID_TEST_INPUT = "test commoncommand -param1 value1 -param2 value2";
+    private static final String TEST_COMMAND = "test commoncommand";
     private static final Map<String, String> TEST_COMMAND_PARAMETERS = Map.of("-param1", "value1", "-param2", "value2");
 
     private InputStream stdin = System.in;

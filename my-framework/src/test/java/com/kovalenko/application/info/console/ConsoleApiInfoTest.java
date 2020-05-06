@@ -1,10 +1,11 @@
 package com.kovalenko.application.info.console;
 
 import com.kovalenko.application.BaseTest;
+import com.kovalenko.application.commoncommand.info.entity.Info;
+import com.kovalenko.application.commoncommand.info.service.ApiInfo;
+import com.kovalenko.application.commoncommand.info.service.console.ConsoleApiInfo;
+import com.kovalenko.application.commoncommand.info.service.constant.ApiInfoConstant;
 import com.kovalenko.application.exception.ApplicationException;
-import com.kovalenko.application.info.ApiInfo;
-import com.kovalenko.application.info.constant.ApiInfoConstant;
-import com.kovalenko.application.info.entity.Info;
 import com.kovalenko.ioc.exception.BeanCreationException;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,4 @@
-package com.kovalenko.application.info.entity;
-
-import com.kovalenko.application.info.constant.ApiInfoConstant;
+package com.kovalenko.application.commoncommand.info.entity;
 
 import java.util.List;
 
@@ -34,16 +32,5 @@ public class Info {
 
     public List<OperationParameter> getOperationParameters() {
         return operationParameters;
-    }
-
-    public void print() {
-        System.out.println(ApiInfoConstant.API_DECLARATION.getValue().concat(api));
-        System.out.println(ApiInfoConstant.API_DESCRIPTION.getValue().concat(description));
-        operationParameters.forEach(operationParam -> System.out.println(
-            ApiInfoConstant.API_PATH_VAR_DECLARATION.getValue()
-                .concat(operationParam.getName())
-                .concat(ApiInfoConstant.API_PATH_VAR_DESCRIPTION.getValue())
-                .concat(operationParam.getDescription())));
-        System.out.println(ApiInfoConstant.API_DELIMITER.getValue());
     }
 }

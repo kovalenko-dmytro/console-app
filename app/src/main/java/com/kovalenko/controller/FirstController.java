@@ -1,8 +1,9 @@
 package com.kovalenko.controller;
 
-import com.kovalenko.application.info.annotation.OperationInfo;
-import com.kovalenko.application.info.annotation.OperationParam;
-import com.kovalenko.application.info.annotation.OperationParams;
+
+import com.kovalenko.application.commoncommand.info.service.annotation.OperationInfo;
+import com.kovalenko.application.commoncommand.info.service.annotation.OperationParam;
+import com.kovalenko.application.commoncommand.info.service.annotation.OperationParams;
 import com.kovalenko.application.message.MessageSource;
 import com.kovalenko.application.resolve.annotation.PathVariable;
 import com.kovalenko.application.resolve.annotation.RequestMapping;

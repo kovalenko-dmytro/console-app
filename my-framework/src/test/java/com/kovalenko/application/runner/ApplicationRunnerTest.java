@@ -1,8 +1,8 @@
 package com.kovalenko.application.runner;
 
 import com.kovalenko.application.BaseTest;
+import com.kovalenko.application.commoncommand.CommonCommandType;
 import com.kovalenko.application.exception.ApplicationException;
-import com.kovalenko.application.runner.constant.RunnerConstant;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -17,7 +17,7 @@ class ApplicationRunnerTest extends BaseTest {
 
     private static final Path FILE_PATH = Paths.get("src", "test", "resources", "testFile.txt");
     private static final String TEST_COMMAND = "test -param1 value1 -param2 value2 -param3 ".concat(FILE_PATH.toString());
-    private static final String EXIT = RunnerConstant.EXIT_COMMAND_NAME.getValue();
+    private static final String EXIT = CommonCommandType.EXIT.getValue();
 
     private InputStream stdin = System.in;
     private PrintStream stdout = System.out;

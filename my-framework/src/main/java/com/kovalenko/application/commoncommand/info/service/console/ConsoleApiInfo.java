@@ -1,11 +1,11 @@
-package com.kovalenko.application.info.console;
+package com.kovalenko.application.commoncommand.info.service.console;
 
-import com.kovalenko.application.info.ApiInfo;
-import com.kovalenko.application.info.annotation.OperationInfo;
-import com.kovalenko.application.info.annotation.OperationParam;
-import com.kovalenko.application.info.constant.ApiInfoConstant;
-import com.kovalenko.application.info.entity.Info;
-import com.kovalenko.application.info.entity.OperationParameter;
+import com.kovalenko.application.commoncommand.info.entity.Info;
+import com.kovalenko.application.commoncommand.info.entity.OperationParameter;
+import com.kovalenko.application.commoncommand.info.service.ApiInfo;
+import com.kovalenko.application.commoncommand.info.service.annotation.OperationInfo;
+import com.kovalenko.application.commoncommand.info.service.annotation.OperationParam;
+import com.kovalenko.application.commoncommand.info.service.constant.ApiInfoConstant;
 import com.kovalenko.application.resolve.annotation.RequestMapping;
 import com.kovalenko.ioc.bean.factory.BeanFactory;
 import com.kovalenko.ioc.exception.BeanCreationException;

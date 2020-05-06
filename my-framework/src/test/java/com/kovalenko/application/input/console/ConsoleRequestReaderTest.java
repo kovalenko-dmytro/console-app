@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ConsoleRequestReaderTest {
 
-    private static final String TEST_COMMAND = "test command";
+    private static final String TEST_COMMAND = "test commoncommand";
     private RequestReader<String> requestReader = new ConsoleRequestReader();
 
     @Test

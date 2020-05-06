@@ -1,4 +1,4 @@
-package com.kovalenko.application.info.entity;
+package com.kovalenko.application.commoncommand.info.entity;
 
 public class OperationParameter {
 

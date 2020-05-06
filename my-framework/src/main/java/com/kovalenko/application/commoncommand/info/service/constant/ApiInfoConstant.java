@@ -1,4 +1,4 @@
-package com.kovalenko.application.info.constant;
+package com.kovalenko.application.commoncommand.info.service.constant;
 
 public enum ApiInfoConstant {
     API_DELIMITER("----------------------------------------------------"),
