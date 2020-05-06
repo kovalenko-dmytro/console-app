@@ -11,18 +11,14 @@ public class CommandProviderFactory {
 
     private static MessageSource messageSource = SystemMessageSource.getInstance();
 
-    public static CommandProvider getProvider(String name) throws ApplicationException {
-        RunnerType type = RunnerType.getType(name);
-        switch (type) {
+    public static CommandProvider getProvider(RunnerType runnerType) throws ApplicationException {
+        switch (runnerType) {
+            case SCRIPT:
+            case XML:
+                throw new ApplicationException(messageSource.getMessage("error.command.provider.not.implemented", runnerType.getValue()));
             case CONSOLE:
-                return new ConsoleCommandProvider(new ConsoleRequestReader());
-
-
-            case UNDEFINED:
-                throw new ApplicationException(messageSource.getMessage("error.command.provider.undefined", name));
-
             default:
-                throw new ApplicationException(messageSource.getMessage("error.command.provider.not.implemented", name));
+                return new ConsoleCommandProvider(new ConsoleRequestReader());
         }
     }
 }

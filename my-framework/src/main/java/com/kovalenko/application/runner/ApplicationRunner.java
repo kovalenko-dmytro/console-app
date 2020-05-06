@@ -21,7 +21,6 @@ import com.kovalenko.application.validate.console.ControllerMethodArgsValidator;
 import com.kovalenko.application.view.render.ViewRenderer;
 import com.kovalenko.ioc.exception.BeanCreationException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,22 +51,14 @@ public class ApplicationRunner {
     }
 
     public void run(Map<String, String> arguments) throws ApplicationException {
-        CommandProvider provider = CommandProviderFactory.getProvider(findRunnerType(arguments));
+        RunnerType runnerType = RunnerType.findRunnerType(arguments.keySet());
+        CommandProvider provider = CommandProviderFactory.getProvider(runnerType);
         String input;
         while (true) {
-            input = provider.nextCommand();
+            input = provider.nextCommand().trim();
             if (checkExit(input)) { break; }
             process(input);
         }
-    }
-
-    private String findRunnerType(Map<String, String> programArguments) {
-        return programArguments.keySet().stream()
-            .filter(key ->
-                Arrays.stream(RunnerType.values())
-                    .anyMatch(type -> type.getValue().equalsIgnoreCase(key)))
-            .findFirst()
-            .orElse(null);
     }
 
     private void process(String input) {

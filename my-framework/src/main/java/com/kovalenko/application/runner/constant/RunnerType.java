@@ -1,14 +1,13 @@
 package com.kovalenko.application.runner.constant;
 
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.Set;
 
 public enum RunnerType {
 
-    CONSOLE("console"),
+    CONSOLE("-console"),
     SCRIPT("-script"),
-    XML("-xml"),
-    UNDEFINED("undefined");
+    XML("-xml");
 
     private String value;
 
@@ -20,9 +19,10 @@ public enum RunnerType {
         return value;
     }
 
-    public static RunnerType getType(String name) {
-        return Objects.isNull(name)
-            ? CONSOLE
-            : Arrays.stream(RunnerType.values()).filter(type -> type.getValue().equalsIgnoreCase(name)).findFirst().orElse(UNDEFINED);
+    public static RunnerType findRunnerType(Set<String> argKeys) {
+        return Arrays.stream(RunnerType.values())
+            .filter(runnerType -> argKeys.contains(runnerType.getValue()))
+            .findFirst()
+            .orElse(CONSOLE);
     }
 }
