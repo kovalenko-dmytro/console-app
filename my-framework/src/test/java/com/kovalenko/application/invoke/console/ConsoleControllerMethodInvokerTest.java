@@ -10,14 +10,15 @@ import com.kovalenko.application.resolve.Resolver;
 import com.kovalenko.application.resolve.console.ConsoleControllerResolver;
 import com.kovalenko.application.resolve.entity.RequestPathMatchResult;
 import com.kovalenko.ioc.exception.BeanCreationException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ConsoleControllerMethodInvokerTest extends BaseTest {
 
-    private static final String TEST_COMMAND = "test -param1 value1 -param2 value2 -param3 value3";
+    private static final String TEST_VOID_COMMAND = "test -param1 value1 -param2 value2 -param3 value3";
+    private static final String TEST_RETURNED_OBJECT_COMMAND = "test view -param1 value1 -param2 value2 -param3 value3";
     private RequestPathMatchResult requestPathMatchResult;
     private ConsoleRequest consoleRequest;
 
@@ -25,14 +26,21 @@ class ConsoleControllerMethodInvokerTest extends BaseTest {
     private Resolver<ConsoleRequest, RequestPathMatchResult> resolver = new ConsoleControllerResolver();
     private Invoker<RequestPathMatchResult, ConsoleRequest> invoker = new ConsoleControllerMethodInvoker();
 
-    @BeforeEach
-    void setUp() throws BeanCreationException, ApplicationException {
-        consoleRequest = parser.parse(TEST_COMMAND);
+    @Test
+    void invokeVoidControllerMethod() throws ApplicationException, BeanCreationException {
+        consoleRequest = parser.parse(TEST_VOID_COMMAND);
         requestPathMatchResult = resolver.resolve(consoleRequest);
+        Object actual = invoker.invoke(requestPathMatchResult, consoleRequest);
+
+        assertNull(actual);
     }
 
     @Test
-    void invokeControllerMethod() {
-        assertDoesNotThrow(() -> invoker.invoke(requestPathMatchResult, consoleRequest));
+    void invokeReturnedObjectControllerMethod() throws ApplicationException, BeanCreationException {
+        consoleRequest = parser.parse(TEST_RETURNED_OBJECT_COMMAND);
+        requestPathMatchResult = resolver.resolve(consoleRequest);
+        Object actual = invoker.invoke(requestPathMatchResult, consoleRequest);
+
+        assertNotNull(actual);
     }
 }

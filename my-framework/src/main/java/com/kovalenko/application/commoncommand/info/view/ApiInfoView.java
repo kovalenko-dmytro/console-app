@@ -20,11 +20,13 @@ public class ApiInfoView extends ConsoleView<List<Info>> {
                 System.out.println(ApiInfoConstant.API_DECLARATION.getValue().concat(info.getApi()));
                 System.out.println(ApiInfoConstant.API_DESCRIPTION.getValue().concat(info.getDescription()));
 
-                info.getOperationParameters().forEach(operationParam -> System.out.println(
-                    ApiInfoConstant.API_PATH_VAR_DECLARATION.getValue()
-                        .concat(operationParam.getName())
-                        .concat(ApiInfoConstant.API_PATH_VAR_DESCRIPTION.getValue())
-                        .concat(operationParam.getDescription())));
+                if (Objects.nonNull(info.getOperationParameters())) {
+                    info.getOperationParameters().forEach(operationParam -> System.out.println(
+                        ApiInfoConstant.API_PATH_VAR_DECLARATION.getValue()
+                            .concat(operationParam.getName())
+                            .concat(ApiInfoConstant.API_PATH_VAR_DESCRIPTION.getValue())
+                            .concat(operationParam.getDescription())));
+                }
 
                 System.out.println(ApiInfoConstant.API_DELIMITER.getValue());
             });

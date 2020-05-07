@@ -15,7 +15,7 @@ public abstract class ConsoleView<T> implements View {
         this.body = body;
     }
 
-    protected ResponseStatus getResponseStatus() {
+    public ResponseStatus getResponseStatus() {
         return responseStatus;
     }
 
@@ -23,7 +23,7 @@ public abstract class ConsoleView<T> implements View {
         this.responseStatus = responseStatus;
     }
 
-    protected String getErrorMessage() {
+    public String getErrorMessage() {
         return errorMessage;
     }
 
@@ -31,7 +31,7 @@ public abstract class ConsoleView<T> implements View {
         this.errorMessage = errorMessage;
     }
 
-    protected T getBody() {
+    public T getBody() {
         return body;
     }
 
