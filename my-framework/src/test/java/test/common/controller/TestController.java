@@ -38,6 +38,12 @@ public class TestController {
         firstTestService.test(param1, param2, param3);
     }
 
+    @RequestMapping(path = "test {-param1} {-param2}")
+    public void duplicatePathVarNames(@PathVariable(name = "-param1") @NotNull String param1,
+                                      @PathVariable(name = "-param1") @NotEmpty String param2) {
+
+    }
+
     @RequestMapping(path = "test {-param}")
     public void test2(@PathVariable(name = "param") String param) {}
 

@@ -18,8 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ConsoleRequestParserTest {
 
     private static final String INVALID_TEST_INPUT = "-wrong input";
-    private static final String VALID_TEST_INPUT = "test commoncommand -param1 value1 -param2 value2";
-    private static final String TEST_COMMAND = "test commoncommand";
+    private static final String VALID_TEST_INPUT = "test command -param1 value1 -param2 value2";
+    private static final String TEST_COMMAND = "test command";
+    private static final String DUPLICATE_PARAMS_TEST_INPUT = "test -param value1 -param value2";
     private static final Map<String, String> TEST_COMMAND_PARAMETERS = Map.of("-param1", "value1", "-param2", "value2");
 
     private InputStream stdin = System.in;
@@ -53,6 +54,14 @@ class ConsoleRequestParserTest {
 
         Exception exception = assertThrows(ApplicationException.class, () -> requestParser.parse(input));
         assertEquals(messageSource.getMessage("error.cannot.parse.request.path"), exception.getMessage());
+    }
+
+    @Test
+    void whenDuplicateRequestPathParamsShouldThrown() {
+        getUserInput(DUPLICATE_PARAMS_TEST_INPUT);
+
+        Exception exception = assertThrows(ApplicationException.class, () -> requestParser.parse(input));
+        assertEquals(messageSource.getMessage("error.cannot.duplicate.param.names"), exception.getMessage());
     }
 
     private void getUserInput(String command) {
