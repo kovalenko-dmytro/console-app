@@ -15,6 +15,7 @@ public class ApiInfoView extends ConsoleView<List<Info>> {
             System.out.println(getErrorMessage());
         }
         if (Objects.nonNull(getBody())) {
+            System.out.println(ApiInfoConstant.API_DELIMITER.getValue());
             getBody().forEach(info -> {
                 System.out.println(ApiInfoConstant.API_DECLARATION.getValue().concat(info.getApi()));
                 System.out.println(ApiInfoConstant.API_DESCRIPTION.getValue().concat(info.getDescription()));
