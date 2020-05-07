@@ -33,11 +33,12 @@ public class ConsoleRequestParser implements RequestParser<ConsoleRequest> {
         throw new ApplicationException(messageSource.getMessage("error.cannot.parse.request.path"));
     }
 
-    private Map<String, String> getRequestParameters(String input) {
+    private Map<String, String> getRequestParameters(String input) throws ApplicationException {
         Map<String, String> result = new LinkedHashMap<>();
         Matcher matcher = Pattern.compile(InputConstant.REQUEST_PARAMS_REGEX.getValue(), Pattern.CASE_INSENSITIVE).matcher(input);
         while (matcher.find()) {
             String paramName = matcher.group(1);
+            checkDuplicateParamNames(result, paramName);
             String paramValue = matcher.group(4);
             if (Objects.isNull(paramValue)) {
                 paramValue = matcher.group(5);
@@ -45,5 +46,11 @@ public class ConsoleRequestParser implements RequestParser<ConsoleRequest> {
             result.put(paramName, paramValue);
         }
         return result;
+    }
+
+    private void checkDuplicateParamNames(Map<String, String> result, String paramName) throws ApplicationException {
+        if (result.containsKey(paramName)) {
+            throw new ApplicationException(messageSource.getMessage("error.cannot.duplicate.param.names"));
+        }
     }
 }

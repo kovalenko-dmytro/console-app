@@ -15,6 +15,7 @@ import com.kovalenko.ioc.exception.BeanCreationException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -48,11 +49,22 @@ public class ConsoleControllerResolver implements Resolver<ConsoleRequest, Reque
     }
 
     private void checkPathVariables(Method method, ConsoleRequest request) throws ApplicationException {
+        checkDuplicatePathVariablesNames(method.getParameters());
         for (String requestParam: request.getRequestParameters().keySet()) {
                 Arrays.stream(method.getParameters())
                     .filter(filterByPathVariableAnnotation(requestParam))
                     .findFirst()
                     .orElseThrow(() -> new ApplicationException(messageSource.getMessage("error.cannot.resolve.path.variable", requestParam, method.getAnnotation(RequestMapping.class).path())));
+        }
+    }
+
+    private void checkDuplicatePathVariablesNames(Parameter[] parameters) throws ApplicationException {
+        boolean areAllUnique = Arrays.stream(parameters)
+            .filter(parameter -> parameter.isAnnotationPresent(PathVariable.class))
+            .map(parameter -> parameter.getAnnotation(PathVariable.class).name())
+            .allMatch(new HashSet<>()::add);
+        if (!areAllUnique) {
+            throw new ApplicationException(messageSource.getMessage("error.cannot.duplicate.path.var.names", PathVariable.class.getSimpleName()));
         }
     }
 
