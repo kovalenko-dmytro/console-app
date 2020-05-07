@@ -1,9 +1,8 @@
-package com.kovalenko.application.info.console;
+package com.kovalenko.application.commoncommand.info.service.console;
 
 import com.kovalenko.application.BaseTest;
 import com.kovalenko.application.commoncommand.info.entity.Info;
 import com.kovalenko.application.commoncommand.info.service.ApiInfo;
-import com.kovalenko.application.commoncommand.info.service.console.ConsoleApiInfo;
 import com.kovalenko.application.commoncommand.info.service.constant.ApiInfoConstant;
 import com.kovalenko.application.exception.ApplicationException;
 import com.kovalenko.ioc.exception.BeanCreationException;
