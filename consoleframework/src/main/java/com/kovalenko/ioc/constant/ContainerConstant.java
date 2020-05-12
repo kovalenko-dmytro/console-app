@@ -1,10 +1,10 @@
 package com.kovalenko.ioc.constant;
 
 public enum ContainerConstant {
+
     DOT("."),
     SLASH("/"),
-    CLASS_EXTENSION(".class"),
-    SETTER_PREFIX("set");
+    CLASS_EXTENSION(".class");
 
     private String value;
 

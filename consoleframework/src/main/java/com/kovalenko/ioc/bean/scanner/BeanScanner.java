@@ -67,14 +67,14 @@ public class BeanScanner {
             if (classObject.isAnnotationPresent(Configuration.class)) {
                 findBeansFromConfiguration(classObject, beans);            }
             if (classObject.isAnnotationPresent(Service.class) || classObject.isAnnotationPresent(Controller.class)) {
-                addBeanToContext(beans, className, classObject);
+                addBeanToContext(beans, classObject);
             }
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             throw new BeanCreationException(messageSource.getMessage("error.cannot.create.bean", className));
         }
     }
 
-    private void findBeansFromConfiguration(Class classObject, Map<String, Object> beans) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    private void findBeansFromConfiguration(Class classObject, Map<String, Object> beans) throws InvocationTargetException, InstantiationException, IllegalAccessException {
         for (Method method: classObject.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Bean.class)) {
                 Object invokeObject = classObject.newInstance();
@@ -84,7 +84,7 @@ public class BeanScanner {
         }
     }
 
-    private void addBeanToContext(Map<String, Object> beans, String className, Class classObject) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    private void addBeanToContext(Map<String, Object> beans, Class classObject) throws InstantiationException, IllegalAccessException {
         Object instance = classObject.newInstance();
         beans.put(classObject.getCanonicalName(), instance);
     }

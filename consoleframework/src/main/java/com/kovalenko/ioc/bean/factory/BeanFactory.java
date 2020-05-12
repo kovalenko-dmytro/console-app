@@ -16,13 +16,14 @@ public class BeanFactory {
 
     private BeanScanner beanScanner;
     private BeanInjector beanInjector;
-    private MessageSource messageSource = SystemMessageSource.getInstance();
+    private MessageSource messageSource;
 
     private Map<String, Object> beans = new HashMap<>();
 
     private BeanFactory() {
         beanScanner = new BeanScanner();
         beanInjector = new BeanInjector();
+        messageSource = SystemMessageSource.getInstance();
     }
 
     private static class BeanFactoryHolder {
